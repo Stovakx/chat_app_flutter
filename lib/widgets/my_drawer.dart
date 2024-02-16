@@ -27,7 +27,7 @@ class MyDrawer extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Your App Name',
+                    'Chat clone name',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onPrimary,
                       fontSize: 22,
@@ -47,8 +47,8 @@ class MyDrawer extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 25.0, top: 15),
                       child: ListTile(
-                        title: const Text("C H A T S"),
-                        leading: const Icon(Icons.home),
+                        title:  Text("C H A T S", style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),),
+                        leading:  Icon(Icons.home, color: Theme.of(context).colorScheme.inversePrimary,),
                         //funkce hází error (invalid constant)
                         onTap: () {
                           Navigator.pop(context);
@@ -62,8 +62,8 @@ class MyDrawer extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 25.0),
                       child: ListTile(
-                        title: const Text("S E T T I N G S"),
-                        leading: const Icon(Icons.settings),
+                        title:  Text("S E T T I N G S", style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),),
+                        leading:  Icon(Icons.settings, color: Theme.of(context).colorScheme.inversePrimary,),
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -80,8 +80,8 @@ class MyDrawer extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 25.0, bottom: 20),
                       child: ListTile(
-                        title: const Text("L O G O U T"),
-                        leading: const Icon(Icons.logout),
+                        title:  Text("L O G O U T", style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),),
+                        leading:  Icon(Icons.logout, color: Theme.of(context).colorScheme.inversePrimary,),
                         onTap: () => logout(context),
                       ),
                     )

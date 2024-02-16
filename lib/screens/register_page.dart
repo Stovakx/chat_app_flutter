@@ -41,7 +41,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -66,30 +66,35 @@ class RegisterPage extends StatelessWidget {
                 hintText: "First Name",
                 obscureText: false,
                 controller: _firstNameController,
+                borderRadius: 0,
               ),
               const SizedBox(height: 12),
               MyTextfield(
                 hintText: "Last Name",
                 obscureText: false,
                 controller: _lastNameController,
+                borderRadius: 0,
               ),
               const SizedBox(height: 12),
               MyTextfield(
                 hintText: "Email",
                 obscureText: false,
                 controller: _emailController,
+                borderRadius: 0,
               ),
               const SizedBox(height: 12),
               MyTextfield(
                 hintText: "Password",
                 obscureText: true,
                 controller: _pwController,
+                borderRadius: 0,
               ),
               const SizedBox(height: 12),
               MyTextfield(
                 hintText: "Confirm password",
                 obscureText: true,
                 controller: _confirmPwController,
+                borderRadius: 0,
               ),
               const SizedBox(height: 30),
               // Tlačítko pro registraci

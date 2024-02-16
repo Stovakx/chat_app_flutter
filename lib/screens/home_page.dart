@@ -65,7 +65,7 @@ class HomePage extends StatelessWidget {
         text: userData["fullName"],
         onTap: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) =>  ChatPage(receiverEmail: userData["email"],receiverID: userData["uid"],)));
+              MaterialPageRoute(builder: (context) =>  ChatPage(receiverEmail: userData["fullName"],receiverID: userData["uid"],)));
         },
       );
     } else {

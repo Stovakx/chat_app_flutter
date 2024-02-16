@@ -37,7 +37,7 @@ class ForgotPasswordPage extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          MyTextfield(hintText: "Your email", obscureText: false, controller: _emailController),
+          MyTextfield(hintText: "Your email", obscureText: false, controller: _emailController, borderRadius: 0,),
                       const SizedBox(height: 30),
             // Tlačítko pro registraci
             MyButton(

@@ -45,14 +45,18 @@ class ChatService {
         .add(newMessage.toMap());
   }
 
-  //dostání zprávy 
-  Stream<QuerySnapshot> getMessages(String userID, otherUserID){
-    
+  //dostání zprávy
+  Stream<QuerySnapshot> getMessages(String userID, otherUserID) {
     //vytvoření chatovací místnosti
     List<String> ids = [userID, otherUserID];
     ids.sort();
     String chatRoomID = ids.join('_');
 
-    return _firestore.collection('chat_rooms').doc(chatRoomID).collection('messages').orderBy('timestamp', descending: false).snapshots();
+    return _firestore
+        .collection('chat_rooms')
+        .doc(chatRoomID)
+        .collection('messages')
+        .orderBy('timestamp', descending: false)
+        .snapshots();
   }
 }
