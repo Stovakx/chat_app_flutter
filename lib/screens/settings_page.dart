@@ -12,6 +12,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -53,10 +54,8 @@ class SettingsPage extends StatelessWidget {
                 leading: const Icon(Icons.person),
                 title: const Text("Personal data"),
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PersonalSettingsPage()));
+                  Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => const PersonalSettingsPage()));
                 },
               ),
             ),

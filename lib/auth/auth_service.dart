@@ -51,4 +51,14 @@ class AuthService {
       throw Exception(e.code);
     }
   }
+
+  //získání userDat
+  Future<DocumentSnapshot> getUserData() async {
+  User? user = _auth.currentUser;
+  if (user != null) {
+    return await _firestore.collection("Users").doc(user.uid).get();
+  } else {
+    throw Exception("User not logged in");
+  }
+}
 }

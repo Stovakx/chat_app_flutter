@@ -29,7 +29,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
       drawer: const MyDrawer(),
-      body: _buildUserList(), // Přidáno zobrazení seznamu uživatelů
+      body: _buildUserList(), 
     );
   }
 
@@ -65,7 +65,7 @@ class HomePage extends StatelessWidget {
         text: userData["fullName"],
         onTap: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) =>  ChatPage(receiverEmail: userData["fullName"],receiverID: userData["uid"],)));
+              MaterialPageRoute(builder: (context) =>  ChatPage(receiverID: userData["uid"], receiverFullName: userData["fullName"],)));
         },
       );
     } else {

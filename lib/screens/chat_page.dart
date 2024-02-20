@@ -1,3 +1,4 @@
+import 'package:chatapp/screens/personal_page.dart';
 import 'package:chatapp/widgets/chat_bubble.dart';
 import 'package:chatapp/widgets/my_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,11 +7,11 @@ import '../auth/auth_service.dart';
 import '../services/chat/chat_service.dart';
 
 class ChatPage extends StatefulWidget {
-  final String receiverEmail;
+  final String receiverFullName;
   final String receiverID;
 
   const ChatPage(
-      {super.key, required this.receiverEmail, required this.receiverID});
+      {super.key, required this.receiverFullName, required this.receiverID});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -65,7 +66,10 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.receiverEmail),
+        title: GestureDetector(
+          onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> PersonalPage(id: widget.receiverID,)));},
+          child: Text(widget.receiverFullName),
+        ),
         centerTitle: true,
       ),
       body: Column(children: [

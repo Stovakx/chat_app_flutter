@@ -49,7 +49,6 @@ class MyDrawer extends StatelessWidget {
                       child: ListTile(
                         title:  Text("C H A T S", style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),),
                         leading:  Icon(Icons.home, color: Theme.of(context).colorScheme.inversePrimary,),
-                        //funkce hází error (invalid constant)
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
