@@ -1,5 +1,4 @@
 import 'package:chatapp/auth/auth_service.dart';
-import 'package:chatapp/widgets/my_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +11,13 @@ class PersonalSettingsPage extends StatefulWidget {
 
 class _PersonalSettingsPageState extends State<PersonalSettingsPage> {
   final AuthService _authService = AuthService();
-
   bool isEditing = false;
+
+  void toggleEditing() {
+    setState(() {
+      isEditing = !isEditing;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,39 +51,115 @@ class _PersonalSettingsPageState extends State<PersonalSettingsPage> {
           body: Container(
             padding: const EdgeInsets.all(12.0),
             child: Column(
-              children: [
-                Row(
-                  children: [
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                      Text("Full Name: ", style: TextStyle(fontSize: 18)),
-                      Text("Email: ", style:  TextStyle(fontSize: 18,)),
-                      Text("Birthdate: ", style: TextStyle(fontSize: 18)),
-                      Text("Location: ", style: TextStyle(fontSize: 18)),
-                    ]),
-                    const SizedBox(width: 10,),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                      Text(userData["fullName"],
-                          style: const TextStyle(fontSize: 18)),
-                      Text(userData["email"], style: const TextStyle(fontSize: 18)),
-                      Text(
-                        (userData["birthdate"] != null)
-                            ? userData["birthdate"]
-                            : "",
-                        style: const TextStyle(fontSize: 18),
+              children: isEditing
+                  ? [
+                    //odstramit const potom... nebudou fungovat inputs a apply changes 
+                      const Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Full Name: ",
+                                  style: TextStyle(fontSize: 18)),
+                              Text("Email: ", style: TextStyle(fontSize: 18)),
+                              Text("Birthdate: ",
+                                  style: TextStyle(fontSize: 18)),
+                              Text("Location: ",
+                                  style: TextStyle(fontSize: 18)),
+                            ],
+                          ),
+                          SizedBox(width: 10,),
+                          //inputs
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Full Name: ",
+                                  style: TextStyle(fontSize: 18)),
+                              Text("Email: ", style: TextStyle(fontSize: 18)),
+                              Text("Birthdate: ",
+                                  style: TextStyle(fontSize: 18)),
+                              Text("Location: ",
+                                  style: TextStyle(fontSize: 18)),
+                            ],
+                          ),
+                        ],
                       ),
-                      Text(
-                          (userData["location"] != null)
-                              ? userData["location"]
-                              : "",
-                          style: const TextStyle(fontSize: 18)),
-                    ]),
-                  ],
-                )
-              ],
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                              style: TextButton.styleFrom(
+                                  foregroundColor: Colors.green),
+                              onPressed: () {},
+                              child: const Text(
+                                "Save changes",
+                                style: TextStyle(fontSize: 18),
+                              )),
+                          TextButton(
+                              style: TextButton.styleFrom(
+                                  foregroundColor: Colors.red),
+                              onPressed: toggleEditing,
+                              child: const Text(
+                                "Decline",
+                                style: TextStyle(fontSize: 18),
+                              ))
+                        ],
+                      ),
+                    ]
+                  : [
+                      Row(
+                        children: [
+                          const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Full Name: ",
+                                  style: TextStyle(fontSize: 18)),
+                              Text("Email: ", style: TextStyle(fontSize: 18)),
+                              Text("Birthdate: ",
+                                  style: TextStyle(fontSize: 18)),
+                              Text("Location: ",
+                                  style: TextStyle(fontSize: 18)),
+                            ],
+                          ),
+                          const SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(userData["fullName"],
+                                  style: const TextStyle(fontSize: 18)),
+                              Text(userData["email"],
+                                  style: const TextStyle(fontSize: 18)),
+                              Text(
+                                userData["birthdate"] ??
+                                    "", // Check for null and provide default value
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                              Text(
+                                userData["location"] ??
+                                    "", // Check for null and provide default value
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            style: TextButton.styleFrom(
+                                foregroundColor: Colors.blueAccent),
+                            onPressed: toggleEditing,
+                            child: const Text("Change data",
+                                style: TextStyle(fontSize: 18)),
+                          ),
+                        ],
+                      ),
+                    ],
             ),
           ),
         );
