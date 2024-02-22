@@ -16,7 +16,7 @@ class PersonalPage extends StatelessWidget {
         if (!snapshot.hasData) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text("Loading..."),
+              title: const Text(""),
               centerTitle: true,
             ),
             body: const Center(child: CircularProgressIndicator()),

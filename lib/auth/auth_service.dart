@@ -35,16 +35,18 @@ class AuthService {
   }
 
   //register
-  Future<UserCredential> signUpWithEmailPassword(String email, password,  firstName, lastName) async {
+  Future<UserCredential> signUpWithEmailPassword(
+      String email, password, firstName, lastName) async {
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
 
       //uložení informací o uživateli do rozdílného docs
-      _firestore
-          .collection("Users")
-          .doc(userCredential.user!.uid)
-          .set({"uid": userCredential.user!.uid, 'email': email, "fullName": '$firstName $lastName'});
+      _firestore.collection("Users").doc(userCredential.user!.uid).set({
+        "uid": userCredential.user!.uid,
+        'email': email,
+        "fullName": '$firstName $lastName'
+      });
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
@@ -54,11 +56,21 @@ class AuthService {
 
   //získání userDat
   Future<DocumentSnapshot> getUserData() async {
-  User? user = _auth.currentUser;
-  if (user != null) {
-    return await _firestore.collection("Users").doc(user.uid).get();
-  } else {
-    throw Exception("User not logged in");
+    User? user = _auth.currentUser;
+    if (user != null) {
+      return await _firestore.collection("Users").doc(user.uid).get();
+    } else {
+      throw Exception("User not logged in");
+    }
   }
-}
+
+//úprava userDat
+  Future<void> updateUserData(
+      String userId, Map<String, dynamic> newData) async {
+    try {
+      await _firestore.collection("Users").doc(userId).update(newData);
+    } catch (e) {
+      throw Exception("Failed to update user data: $e");
+    }
+  }
 }
