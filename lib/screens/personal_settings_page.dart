@@ -27,13 +27,10 @@ class _PersonalSettingsPageState extends State<PersonalSettingsPage> {
   }
 
   //TODO: přidat vyskakovací modal/dialog, kde uživatel bude potvrzovat změny heslem
-  //funkce zatím nefunguje.. 
 void changeData() async {
+  _authService.getUserData();
   // Uložení kontextu pro použití uvnitř asynchronní operace
   final scaffoldContext = context;
-
-  // Kontrola zda jsou data načtena
-  if (userData == null) return;
 
   // Získání hodnot z textových polí
   String fullName = fullNameController.text.trim();
@@ -42,7 +39,7 @@ void changeData() async {
 
   // Inicializace prázdné mapy pro změny
   Map<String, dynamic> newData = {};
-
+  
   // Kontrola změn a přidání změněných hodnot do mapy newData
   if (fullName.isNotEmpty && fullName != userData!["fullName"]) {
     // Oveření formátu fullName pomocí regulárního výrazu
@@ -77,7 +74,7 @@ void changeData() async {
     );
     return;
   }
-
+  
   try {
     // Aktualizace dat
     await _authService.updateUserData(userData!["uid"], newData);
@@ -85,7 +82,6 @@ void changeData() async {
       ScaffoldMessenger.of(scaffoldContext).showSnackBar(
           const SnackBar(content: Text('Data updated successfully')));
     }
-    print(newData);
     toggleEditing(); // Změna stavu po úspěšné aktualizaci dat
   } catch (e) {
     // Zobrazit chybu ohledně aktualizace
@@ -126,174 +122,172 @@ void changeData() async {
             title: const Text("Personal settings"),
             centerTitle: true,
           ),
-          body: Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                children: isEditing
-                    ? [
-                        Row(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    const Text("Full Name: ",
-                                        style: TextStyle(fontSize: 18)),
-                                    TextField(
-                                      decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          focusedBorder: InputBorder.none,
-                                          constraints: BoxConstraints(
-                                            maxWidth: 150,
-                                          ),
-                                          hintText: "Full Name"),
-                                      controller: fullNameController,
+          body: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: isEditing
+                  ? [
+                      Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Text("Full Name: ",
+                                      style: TextStyle(fontSize: 18)),
+                                  TextField(
+                                    decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        constraints: BoxConstraints(
+                                          maxWidth: 150,
+                                        ),
+                                        hintText: "Full Name"),
+                                    controller: fullNameController,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  const Text("Email: ",
+                                      style: TextStyle(fontSize: 18)),
+                                  TextField(
+                                    decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        constraints: BoxConstraints(
+                                          maxWidth: 150,
+                                        ),
+                                        hintText: "email",
+                                        hintStyle: TextStyle(fontSize: 18)),
+                                    controller: emailController,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  const Text("Birthdate: ",
+                                      style: TextStyle(fontSize: 18)),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      final DateTime? newDate =
+                                          await showDatePicker(
+                                        context: context,
+                                        initialDate: selectedDate,
+                                        firstDate: DateTime(1950),
+                                        lastDate: DateTime.now(),
+                                        initialEntryMode:
+                                            DatePickerEntryMode.input,
+                                      );
+          
+                                      if (newDate != null) {
+                                        setState(() {
+                                          selectedDate = newDate;
+                                        });
+                                      }
+                                    },
+                                    child: Text(
+                                      "${selectedDate.day}.${selectedDate.month}.${selectedDate.year}",
+                                      style: const TextStyle(fontSize: 18),
                                     ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    const Text("Email: ",
-                                        style: TextStyle(fontSize: 18)),
-                                    TextField(
-                                      decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          focusedBorder: InputBorder.none,
-                                          constraints: BoxConstraints(
-                                            maxWidth: 150,
-                                          ),
-                                          hintText: "email",
-                                          hintStyle: TextStyle(fontSize: 18)),
-                                      controller: emailController,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    const Text("Birthdate: ",
-                                        style: TextStyle(fontSize: 18)),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        final DateTime? newDate =
-                                            await showDatePicker(
-                                          context: context,
-                                          initialDate: selectedDate,
-                                          firstDate: DateTime(1950),
-                                          lastDate: DateTime.now(),
-                                          initialEntryMode:
-                                              DatePickerEntryMode.input,
-                                        );
-
-                                        if (newDate != null) {
-                                          setState(() {
-                                            selectedDate = newDate;
-                                          });
-                                        }
-                                      },
-                                      child: Text(
-                                        "${selectedDate.day}.${selectedDate.month}.${selectedDate.year}",
-                                        style: const TextStyle(fontSize: 18),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    const Text("Location: ",
-                                        style: TextStyle(fontSize: 18)),
-                                    TextField(
-                                      decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          focusedBorder: InputBorder.none,
-                                          constraints: BoxConstraints(
-                                            maxWidth: 150,
-                                          ),
-                                          hintText: "Location"),
-                                      controller: locationController,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TextButton(
-                                style: TextButton.styleFrom(
-                                    foregroundColor: Colors.green),
-                                onPressed: changeData,
-                                child: const Text(
-                                  "Save changes",
-                                  style: TextStyle(fontSize: 18),
-                                )),
-                            TextButton(
-                                style: TextButton.styleFrom(
-                                    foregroundColor: Colors.red),
-                                onPressed: toggleEditing,
-                                child: const Text(
-                                  "Decline",
-                                  style: TextStyle(fontSize: 18),
-                                ))
-                          ],
-                        ),
-                      ]
-                    : [
-                        Row(
-                          children: [
-                            const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Full Name: ",
-                                    style: TextStyle(fontSize: 18)),
-                                Text("Email: ", style: TextStyle(fontSize: 18)),
-                                Text("Birthdate: ",
-                                    style: TextStyle(fontSize: 18)),
-                                Text("Location: ",
-                                    style: TextStyle(fontSize: 18)),
-                              ],
-                            ),
-                            const SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(userData["fullName"],
-                                    style: const TextStyle(fontSize: 18)),
-                                Text(userData["email"],
-                                    style: const TextStyle(fontSize: 18)),
-                                Text(
-                                  userData["birthdate"] ?? "",
-                                  style: const TextStyle(fontSize: 18),
-                                ),
-                                Text(
-                                  userData["location"] ?? "",
-                                  style: const TextStyle(fontSize: 18),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TextButton(
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  const Text("Location: ",
+                                      style: TextStyle(fontSize: 18)),
+                                  TextField(
+                                    decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        constraints: BoxConstraints(
+                                          maxWidth: 150,
+                                        ),
+                                        hintText: "Location"),
+                                    controller: locationController,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
                               style: TextButton.styleFrom(
-                                  foregroundColor: Colors.blueAccent),
+                                  foregroundColor: Colors.green),
+                              onPressed: changeData,
+                              child: const Text(
+                                "Save changes",
+                                style: TextStyle(fontSize: 18),
+                              )),
+                          TextButton(
+                              style: TextButton.styleFrom(
+                                  foregroundColor: Colors.red),
                               onPressed: toggleEditing,
-                              child: const Text("Change data",
+                              child: const Text(
+                                "Decline",
+                                style: TextStyle(fontSize: 18),
+                              ))
+                        ],
+                      ),
+                    ]
+                  : [
+                      Row(
+                        children: [
+                          const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Full Name: ",
                                   style: TextStyle(fontSize: 18)),
-                            ),
-                          ],
-                        ),
-                      ],
-              ),
+                              Text("Email: ", style: TextStyle(fontSize: 18)),
+                              Text("Birthdate: ",
+                                  style: TextStyle(fontSize: 18)),
+                              Text("Location: ",
+                                  style: TextStyle(fontSize: 18)),
+                            ],
+                          ),
+                          const SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(userData["fullName"],
+                                  style: const TextStyle(fontSize: 18)),
+                              Text(userData["email"],
+                                  style: const TextStyle(fontSize: 18)),
+                              Text(
+                                userData["birthdate"] ?? "",
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                              Text(
+                                userData["location"] ?? "",
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            style: TextButton.styleFrom(
+                                foregroundColor: Colors.blueAccent),
+                            onPressed: toggleEditing,
+                            child: const Text("Change data",
+                                style: TextStyle(fontSize: 18)),
+                          ),
+                        ],
+                      ),
+                    ],
             ),
           ),
         );

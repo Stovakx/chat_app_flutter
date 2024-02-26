@@ -45,7 +45,9 @@ class AuthService {
       _firestore.collection("Users").doc(userCredential.user!.uid).set({
         "uid": userCredential.user!.uid,
         'email': email,
-        "fullName": '$firstName $lastName'
+        "fullName": '$firstName $lastName',
+        "location": " ",
+        "birthDate": " ",
       });
 
       return userCredential;
